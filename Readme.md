@@ -1,3 +1,3 @@
 # Todo Service
 
-The todo service is used to maintain Restful API that can get/create/update/delete user data from persistence storage. 
+The todo service is used to maintain Restful API that can get/create/update/delete todo data from persistence storage. 
