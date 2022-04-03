@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 	"todos/domain"
-	mysql "todos/user/repo"
+	mysql "todos/todo/repo"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/jinzhu/gorm"
@@ -27,14 +27,14 @@ func TestFetchtodos(t *testing.T) {
 	currentTime := time.Now()
 
 	rows := sqlmock.NewRows(userColumn).
-		AddRow(1, "User1", "19-09-1999", "INDIA", currentTime, currentTime).
-		AddRow(2, "User2", "29-09-1999", "INDIA", currentTime, currentTime)
+		AddRow(1, "Todo1", "19-09-1999", "INDIA", currentTime, currentTime).
+		AddRow(2, "Todo2", "29-09-1999", "INDIA", currentTime, currentTime)
 
 	mock.ExpectQuery("^SELECT (.+) FROM `todos`").WillReturnRows(rows)
 
-	mysqlRepo := mysql.NewMysqlUserRepository(db)
+	mysqlRepo := mysql.NewMysqlTodoRepository(db)
 
-	todos, err := mysqlRepo.Fetchtodos()
+	todos, err := mysqlRepo.FetchTodos()
 
 	assert.Nil(t, err)
 	assert.NotNil(t, todos)
@@ -42,7 +42,7 @@ func TestFetchtodos(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestGetUser(t *testing.T) {
+func TestGetTodo(t *testing.T) {
 	DB, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatal(err)
@@ -56,19 +56,19 @@ func TestGetUser(t *testing.T) {
 	currentTime := time.Now()
 
 	row := sqlmock.NewRows(userColumn).
-		AddRow(1, "User1", "19-09-1999", "INDIA", currentTime, currentTime)
+		AddRow(1, "Todo1", "19-09-1999", "INDIA", currentTime, currentTime)
 
 	mock.ExpectQuery("^SELECT (.+) FROM `todos` WHERE .*").WillReturnRows(row)
 
 	userID := 1
-	mysqlRepo := mysql.NewMysqlUserRepository(db)
-	user, err := mysqlRepo.GetUser(userID)
+	mysqlRepo := mysql.NewMysqlTodoRepository(db)
+	user, err := mysqlRepo.GetTodo(userID)
 	assert.Nil(t, err)
 	assert.Equal(t, user.ID, 1)
 	assert.NotNil(t, user)
 }
 
-func TestCreateUser(t *testing.T) {
+func TestCreateTodo(t *testing.T) {
 	DB, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatal(err)
@@ -85,14 +85,14 @@ func TestCreateUser(t *testing.T) {
 
 	currentTime := time.Now()
 
-	newUser := domain.User{ID: 1, Name: "User", Address: "INDIA", CreatedAt: currentTime}
+	newTodo := domain.Todo{ID: 1, Name: "Todo", Description: "INDIA", CreatedAt: currentTime}
 
-	mysqlRepo := mysql.NewMysqlUserRepository(db)
-	err = mysqlRepo.CreateUser(newUser)
+	mysqlRepo := mysql.NewMysqlTodoRepository(db)
+	err = mysqlRepo.CreateTodo(newTodo)
 	assert.NoError(t, err)
 }
 
-func TestUpdateUser(t *testing.T) {
+func TestUpdateTodo(t *testing.T) {
 	DB, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatal(err)
@@ -109,14 +109,14 @@ func TestUpdateUser(t *testing.T) {
 
 	currentTime := time.Now()
 
-	newUser := domain.User{ID: 1, Name: "User", Address: "INDIA", CreatedAt: currentTime}
+	newTodo := domain.Todo{ID: 1, Name: "Todo", Description: "INDIA", CreatedAt: currentTime}
 
-	mysqlRepo := mysql.NewMysqlUserRepository(db)
-	err = mysqlRepo.UpdateUser(newUser)
+	mysqlRepo := mysql.NewMysqlTodoRepository(db)
+	err = mysqlRepo.UpdateTodo(newTodo)
 	assert.NoError(t, err)
 }
 
-func TestDeleteUser(t *testing.T) {
+func TestDeleteTodo(t *testing.T) {
 	DB, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatal(err)
@@ -133,7 +133,7 @@ func TestDeleteUser(t *testing.T) {
 
 	userID := 1
 
-	mysqlRepo := mysql.NewMysqlUserRepository(db)
-	err = mysqlRepo.DeleteUser(userID)
+	mysqlRepo := mysql.NewMysqlTodoRepository(db)
+	err = mysqlRepo.DeleteTodo(userID)
 	assert.NoError(t, err)
 }

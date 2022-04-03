@@ -8,8 +8,6 @@ import (
 	mysql "todos/todo/repo"
 	"todos/todo/usecase"
 
-	docs "todos/docs"
-
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
@@ -34,11 +32,10 @@ func main() {
 		e.Logger.Fatal(err)
 	}
 	db.LogMode(true)
-	todoRepo := mysql.NewMysqlUserRepository(db)
-	todoUsecase := usecase.NewUserUsecase(todoRepo)
-	http.NewUserHandler(e, todoUsecase)
+	todoRepo := mysql.NewMysqlTodoRepository(db)
+	todoUsecase := usecase.NewTodoUsecase(todoRepo)
+	http.NewTodoHandler(e, todoUsecase)
 
-	docs.NewDocumentation(e, e.Group(""))
 	port := viper.GetString("APPLICATION_PORT")
 	log.Fatal(e.Start(":" + port))
 }

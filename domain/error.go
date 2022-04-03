@@ -7,11 +7,11 @@ const (
 	InternalServerError = "Internal Server Error"
 	//BadRequest indicates that the server cannot or will not process the request due to something that is perceived to be a client error
 	BadRequest = "Bad Request"
-	//InvalidUserID represents an error when the user ID is invalid
-	InvalidUserID = "User ID is invalid"
-	//MIssingUserID represents an error when the user ID is missing from the request
-	MIssingUserID = "User ID is missing"
+	//InvalidTodoID represents an error when the user ID is invalid
+	InvalidTodoID = "Todo ID is invalid"
+	//MIssingTodoID represents an error when the user ID is missing from the request
+	MIssingTodoID = "Todo ID is missing"
 )
 
-//ErrUserNotFound represents an error when the user ID is not found in the request
-var ErrTodoNotFound = errors.New("Requested User ID was not found")
+//ErrTodoNotFound represents an error when the user ID is not found in the request
+var ErrTodoNotFound = errors.New("Requested Todo ID was not found")

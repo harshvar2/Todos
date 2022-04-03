@@ -8,14 +8,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// todoHandler : http handler for todos
-type todoHandler struct {
+// TodoHandler : http handler for todos
+type TodoHandler struct {
 	TodoUsecase domain.TodoUsecase
 }
 
-// NewtodoHandler will initialize the todos/ resources endpoint
-func NewtodoHandler(e *echo.Echo, us domain.TodoUsecase) {
-	handler := &todoHandler{
+// NewTodoHandler will initialize the todos/ resources endpoint
+func NewTodoHandler(e *echo.Echo, us domain.TodoUsecase) {
+	handler := &TodoHandler{
 		TodoUsecase: us,
 	}
 	e.GET("/todos", handler.FetchTodos)
@@ -26,7 +26,7 @@ func NewtodoHandler(e *echo.Echo, us domain.TodoUsecase) {
 }
 
 // CreateTodo : Creates a new todo in the database
-func (uh *todoHandler) CreateTodo(c echo.Context) error {
+func (uh *TodoHandler) CreateTodo(c echo.Context) error {
 	var todo domain.Todo
 	err := c.Echo().Binder.Bind(&todo, c)
 	if err != nil {
@@ -42,7 +42,7 @@ func (uh *todoHandler) CreateTodo(c echo.Context) error {
 }
 
 // FetchTodos : Gets all the todo details from the database
-func (uh *todoHandler) FetchTodos(c echo.Context) error {
+func (uh *TodoHandler) FetchTodos(c echo.Context) error {
 
 	todos, err := uh.TodoUsecase.FetchTodos()
 	if err != nil {
@@ -52,7 +52,7 @@ func (uh *todoHandler) FetchTodos(c echo.Context) error {
 }
 
 // GetTodo : Gets a todo details from the database
-func (uh *todoHandler) GetTodo(c echo.Context) error {
+func (uh *TodoHandler) GetTodo(c echo.Context) error {
 
 	idString := c.Param("id")
 	var id int
@@ -72,7 +72,7 @@ func (uh *todoHandler) GetTodo(c echo.Context) error {
 }
 
 // UpdateTodo : Updates a todo in the database
-func (uh *todoHandler) UpdateTodo(c echo.Context) error {
+func (uh *TodoHandler) UpdateTodo(c echo.Context) error {
 	var todo domain.Todo
 	err := c.Echo().Binder.Bind(&todo, c)
 	if err != nil {
@@ -88,7 +88,7 @@ func (uh *todoHandler) UpdateTodo(c echo.Context) error {
 }
 
 // DeleteTodo : deletes a todo from the database
-func (uh *todoHandler) DeleteTodo(c echo.Context) error {
+func (uh *TodoHandler) DeleteTodo(c echo.Context) error {
 	var todo domain.Todo
 	err := c.Echo().Binder.Bind(&todo, c)
 	if err != nil {

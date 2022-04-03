@@ -38,7 +38,7 @@ func TestGetTodo(t *testing.T) {
 func TestCreateTodo(t *testing.T) {
 	mockTodoRepo := new(mocks.TodoRepository)
 	t.Run("Test1", func(t *testing.T) {
-		todo := domain.Todo{Name: "Todo", Address: "localhost", DateOfBirth: "29-09-2014"}
+		todo := domain.Todo{Name: "Todo", Description : "localhost"}
 		mockTodoRepo.On("CreateTodo", mock.AnythingOfType("domain.Todo")).Return(nil).Once()
 		u := NewTodoUsecase(mockTodoRepo)
 		err := u.CreateTodo(todo)
@@ -50,7 +50,7 @@ func TestCreateTodo(t *testing.T) {
 func TestUpdateTodo(t *testing.T) {
 	mockTodoRepo := new(mocks.TodoRepository)
 	t.Run("Test1", func(t *testing.T) {
-		todo := domain.Todo{Name: "Todo", Address: "localhost", DateOfBirth: "29-09-2014"}
+		todo := domain.Todo{Name: "Todo", Description : "localhost"}
 		mockTodoRepo.On("UpdateTodo", mock.AnythingOfType("domain.Todo")).Return(nil).Once()
 		u := NewTodoUsecase(mockTodoRepo)
 		err := u.UpdateTodo(todo)
