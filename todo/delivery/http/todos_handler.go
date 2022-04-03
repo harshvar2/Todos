@@ -3,6 +3,7 @@ package http
 import (
 	"net/http"
 	"strconv"
+	"todos/config"
 	"todos/domain"
 
 	"github.com/labstack/echo/v4"
@@ -23,6 +24,9 @@ func NewTodoHandler(e *echo.Echo, us domain.TodoUsecase) {
 	e.GET("/todos/:id", handler.GetTodo)
 	e.PUT("/todos", handler.UpdateTodo)
 	e.DELETE("/todos/:id", handler.DeleteTodo)
+
+	// healthCheck Route
+	e.GET("/todos/healthCheck", handler.HealthCheck)
 }
 
 // CreateTodo : Creates a new todo in the database
@@ -111,4 +115,33 @@ func (uh *TodoHandler) DeleteTodo(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, "Successfully DeleteTodod Todo ID:"+idString)
+}
+
+// HealthCheck is used for returning healthCheck response
+func (h *TodoHandler) HealthCheck(c echo.Context) (err error) {
+
+	var status = config.Success
+	var dbStatus = config.StatusUp
+
+	err = h.TodoUsecase.CheckDBConnection()
+	if err != nil {
+		status = config.Failure
+		dbStatus = config.StatusDown
+	}
+
+	healthCheckTypes := []*domain.Check{
+		{Name: config.Database, State: dbStatus},
+	}
+	var checks []*domain.Check
+	checks = append(checks, healthCheckTypes...)
+
+	response := &domain.HealthCheck{
+		Status:  status,
+		Version: config.Version,
+		Checks:  checks,
+	}
+	if err != nil {
+		return c.JSON(http.StatusServiceUnavailable, response)
+	}
+	return c.JSON(http.StatusOK, response)
 }

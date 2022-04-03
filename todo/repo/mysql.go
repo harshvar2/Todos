@@ -45,3 +45,13 @@ func (m *mysqlTodoRepository) DeleteTodo(id int) (err error) {
 	}
 	return
 }
+
+//CheckDBConnection check the health state of the database instance
+func (m *mysqlTodoRepository) CheckDBConnection() (err error) {
+
+	pingErr := m.db.DB().Ping()
+	if pingErr != nil {
+		err = pingErr
+	}
+	return
+}

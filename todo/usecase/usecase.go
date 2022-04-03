@@ -35,3 +35,8 @@ func (u *todoUsecase) DeleteTodo(id int) (err error) {
 	err = u.todoRepo.DeleteTodo(id)
 	return
 }
+
+func (u *todoUsecase) CheckDBConnection() (err error) {
+	err = u.todoRepo.CheckDBConnection()
+	return
+}
